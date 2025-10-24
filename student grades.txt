@@ -1,0 +1,39 @@
+def calculate_grade(marks):
+    percentage = sum(marks) / len(marks)
+    if percentage >= 90:
+        return "A", "Excellent performance"
+    elif percentage >= 80:
+        return "B", "Very good work"
+    elif percentage >= 70:
+        return "C", "Good effort"
+    elif percentage >= 60:
+        return "D", "Satisfactory"
+    elif percentage >= 50:
+        return "E", "Needs improvement"
+    else:
+        return "F", "Failing, needs significant improvement"
+
+# Function to input marks, calculate grade and store results
+def student_grade_calculator():
+    results = []  # List to store student results
+    while True:
+        name = input("Enter student name (or 'exit' to finish): ")
+        if name.lower() == 'exit':
+            break
+        marks = []
+        for i in range(1, 6):
+            mark = float(input(f"Enter marks for subject {i}: "))
+            marks.append(mark)
+        grade, comment = calculate_grade(marks)
+        result = {"name": name, "marks": marks, "grade": grade, "comment": comment}
+        results.append(result)
+        print(f"{name}'s Grade: {grade} - {comment}")
+    return results
+
+# Run the calculator
+all_results = student_grade_calculator()
+
+# Display all results stored
+print("All Student Results:")
+for res in all_results:
+    print(f"Name: {res['name']}, Marks: {res['marks']}, Grade: {res['grade']}, Comment: {res['comment']}")
