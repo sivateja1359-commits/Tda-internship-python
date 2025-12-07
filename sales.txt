@@ -1,0 +1,58 @@
+
+
+# Load the dataset
+df = pd.read_csv("sales_data.csv")
+
+# Show first rows
+print(df.head())
+
+# Basic info and stats
+print(df.info())
+print(df.describe())
+
+# Drop missing values
+df = df.dropna()
+
+# Convert OrderDate to datetime
+df["OrderDate"] = pd.to_datetime(df["OrderDate"])
+
+# Extract month
+df["Month"] = df["OrderDate"].dt.to_period("M")
+
+# Create Sales column
+df["Sales"] = df["Quantity"] * df["Price"]
+
+# Top products
+top_products = df.groupby("Product")["Sales"].sum().sort_values(ascending=False)
+print("Top Products:")
+print(top_products.head(10))
+
+# Monthly sales trend
+monthly_sales = df.groupby("Month")["Sales"].sum()
+print("Monthly Sales:")
+print(monthly_sales)
+
+# Plot monthly sales
+plt.figure(figsize=(10,5))
+plt.plot(monthly_sales.index.astype(str), monthly_sales.values, marker="o")
+plt.title("Monthly Sales Trend")
+plt.xlabel("Month")
+plt.ylabel("Total Sales")
+plt.grid(True)
+plt.show()
+
+# Optional: Category or Region
+if "Category" in df.columns:
+    category_sales = df.groupby("Category")["Sales"].sum()
+    print("Category Sales:")
+    print(category_sales)
+
+if "Region" in df.columns:
+    region_sales = df.groupby("Region")["Sales"].sum()
+    print("Region Sales:")
+    print(region_sales)
+
+# Summary
+print("Highest selling product:", top_products.idxmax())
+print("Best month:", monthly_sales.idxmax())
+print("Worst month:", monthly_sales.idxmin())
